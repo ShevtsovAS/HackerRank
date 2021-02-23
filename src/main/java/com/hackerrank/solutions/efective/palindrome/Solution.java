@@ -7,6 +7,22 @@ public class Solution {
         checkPalindrome(12345);
         checkPalindrome(12321);
         checkPalindrome(1221);
+        checkPalindrome("12345");
+        checkPalindrome("12321");
+        checkPalindrome("1221");
+    }
+
+    private static void checkPalindrome(String s) {
+        System.out.printf("%s - %s%n", s, isPalindrome(s) ? "palindrome" : "not palindrome");
+    }
+
+    private static boolean isPalindrome(String s) {
+        for (int i = 0, j = s.length() - 1; i < s.length() / 2; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static void checkPalindrome(int number) {
@@ -15,7 +31,7 @@ public class Solution {
     }
 
     private static boolean isPalindrome(int[] numbers) {
-        for (int i = 0, j = numbers.length -1; i < numbers.length; i++, j--) {
+        for (int i = 0, j = numbers.length - 1; i < numbers.length / 2; i++, j--) {
             if (numbers[i] != numbers[j]) {
                 return false;
             }
