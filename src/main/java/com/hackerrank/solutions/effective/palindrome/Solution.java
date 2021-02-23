@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.palindrome;
+package com.hackerrank.solutions.effective.palindrome;
 
 import java.util.Arrays;
 

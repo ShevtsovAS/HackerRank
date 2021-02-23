@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.swap;
+package com.hackerrank.solutions.effective.swap;
 
 import java.util.ArrayList;
 import java.util.List;

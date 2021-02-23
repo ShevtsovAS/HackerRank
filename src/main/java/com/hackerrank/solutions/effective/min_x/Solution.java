@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.min_x;
+package com.hackerrank.solutions.effective.min_x;
 
 import java.util.List;
 import java.util.Objects;

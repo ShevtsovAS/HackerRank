@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.find_duplicates;
+package com.hackerrank.solutions.effective.find_duplicates;
 
 import java.util.Arrays;
 import java.util.HashMap;

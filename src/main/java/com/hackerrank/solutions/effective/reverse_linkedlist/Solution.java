@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.reverse_linkedlist;
+package com.hackerrank.solutions.effective.reverse_linkedlist;
 
 import java.util.LinkedList;
 import java.util.List;

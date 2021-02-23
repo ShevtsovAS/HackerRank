@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.middle_of_linked_list;
+package com.hackerrank.solutions.effective.middle_of_linked_list;
 
 import java.util.Iterator;
 import java.util.LinkedList;

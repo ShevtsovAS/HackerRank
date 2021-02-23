@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.reverse_string;
+package com.hackerrank.solutions.effective.reverse_string;
 
 public class Solution {
     public static void main(String[] args) {

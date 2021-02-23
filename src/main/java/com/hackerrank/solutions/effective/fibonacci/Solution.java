@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.fibonacci;
+package com.hackerrank.solutions.effective.fibonacci;
 
 import java.util.Optional;
 

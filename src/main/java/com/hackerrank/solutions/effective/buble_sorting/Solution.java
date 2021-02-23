@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.buble_sorting;
+package com.hackerrank.solutions.effective.buble_sorting;
 
 import java.util.Arrays;
 

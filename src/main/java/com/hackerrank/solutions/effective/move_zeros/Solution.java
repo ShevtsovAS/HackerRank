@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.efective.move_zeros;
+package com.hackerrank.solutions.effective.move_zeros;
 
 import java.util.Arrays;
 import java.util.Scanner;
