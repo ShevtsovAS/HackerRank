@@ -26,7 +26,7 @@ public class Solution {
         /* Concatenate and print the String variables on a new line;
         	the 's' variable above should be printed first. */
         System.out.println(i + myInt);
-        System.out.printf("%.1f\n", d + myDouble);
+        System.out.printf("%.1f%n", d + myDouble);
         System.out.println(s + myString);
     }
 }

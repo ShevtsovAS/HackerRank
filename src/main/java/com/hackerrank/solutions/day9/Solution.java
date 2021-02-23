@@ -1,6 +1,5 @@
 package com.hackerrank.solutions.day9;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Solution {
@@ -15,7 +14,7 @@ public class Solution {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         int n = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
         int result = factorial(n);

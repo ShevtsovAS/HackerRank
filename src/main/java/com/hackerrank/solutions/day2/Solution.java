@@ -14,13 +14,14 @@ public class Solution {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        double meal_cost = scanner.nextDouble();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-        int tip_percent = scanner.nextInt();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-        int tax_percent = scanner.nextInt();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-        solve(meal_cost, tip_percent, tax_percent);
+        String scannerScipRegex = "(\r\n|[\n\r\u2028\u2029\u0085])?";
+        double mealCost = scanner.nextDouble();
+        scanner.skip(scannerScipRegex);
+        int tipPercent = scanner.nextInt();
+        scanner.skip(scannerScipRegex);
+        int taxPercent = scanner.nextInt();
+        scanner.skip(scannerScipRegex);
+        solve(mealCost, tipPercent, taxPercent);
         scanner.close();
     }
 }
