@@ -21,7 +21,7 @@ public class Solution {
 
     public static String findFirstUniqueSymbol(String str) {
         return Optional.ofNullable(str)
-                .map(Solution::getSymbolsMap)
+                .map(Solution::toSymbolsMap)
                 .map(LinkedHashMap::entrySet)
                 .stream().flatMap(Collection::stream)
                 .filter(Solution::isUnique)
@@ -34,7 +34,7 @@ public class Solution {
         return entry.getValue() == 1;
     }
 
-    private static LinkedHashMap<String, Integer> getSymbolsMap(String str) {
+    private static LinkedHashMap<String, Integer> toSymbolsMap(String str) {
         return Arrays.stream(str.split("")).collect(toMap(it -> it, it -> 1, Integer::sum, LinkedHashMap::new));
     }
 }
