@@ -1,7 +1,5 @@
 package com.hackerrank.solutions.effective.armstrong_numbers;
 
-import lombok.val;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +34,7 @@ public class Solution {
 
     public static void main(String[] args) {
         var start = System.currentTimeMillis();
-        val armstrongNums = getNumbers(Long.MAX_VALUE);
+        var armstrongNums = getNumbers(Long.MAX_VALUE);
         var end = System.currentTimeMillis();
         System.out.printf("%.2f сек.%n", (end - start) / 1000d);
         System.out.println(mem() / 1024 / 1024 + "mb");
@@ -111,7 +109,7 @@ public class Solution {
     }
 
     public static long mem() {
-        val runtime = Runtime.getRuntime();
+        var runtime = Runtime.getRuntime();
         return runtime.totalMemory() - runtime.freeMemory();
     }
 }
