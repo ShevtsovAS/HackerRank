@@ -10,22 +10,21 @@ class Node {
         this.data = data;
         left = right = null;
     }
+
+    public int getHeight() {
+        if (left == null && right == null) {
+            return 0;
+        }
+        int leftHeight = left == null ? 0 : left.getHeight() + 1;
+        int rightHeight = right == null ? 0 : right.getHeight() + 1;
+        return Math.max(leftHeight, rightHeight);
+    }
 }
 
 public class Solution {
     public static int getHeight(Node root) {
         //Write your code here
-        if (root == null) {
-            return 0;
-        }
-        return Math.max(getHeight(root.left, 0), getHeight(root.right, 0));
-    }
-
-    private static int getHeight(Node root, int currHeight) {
-        if (root == null) {
-            return currHeight;
-        }
-        return Math.max(getHeight(root.left, currHeight + 1), getHeight(root.right, currHeight + 1));
+        return root == null ? 0 : root.getHeight();
     }
 
     public static Node insert(Node root, int data) {
