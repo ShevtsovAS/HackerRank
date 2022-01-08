@@ -15,19 +15,23 @@ class Node {
 public class Solution {
     static void levelOrder(Node root) {
         //Write your code here
-        Map<Integer, Queue<Node>> nodeMap = new TreeMap<>();
-        levelOrder(nodeMap, root, 0);
-        nodeMap.values().forEach(nodes -> nodes.forEach(node -> System.out.printf("%s ", node.data)));
-    }
-
-    private static void levelOrder(Map<Integer, Queue<Node>> nodeMap, Node root, int level) {
         if (root == null) {
             return;
         }
-        Queue<Node> queue = nodeMap.computeIfAbsent(level, n -> new LinkedList<>());
+
+        Queue<Node> queue = new LinkedList<>();
         queue.add(root);
-        levelOrder(nodeMap, root.left, level + 1);
-        levelOrder(nodeMap, root.right, level + 1);
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            System.out.printf("%s ", node.data);
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+        }
     }
 
     public static Node insert(Node root, int data) {
