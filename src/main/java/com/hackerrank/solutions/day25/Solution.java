@@ -21,13 +21,31 @@ public class Solution {
             return true;
         }
 
-        int limit = (int) Math.sqrt(n);
-        for (int i = 2; i <= limit ; i++) {
+        for (int i = 2, limit = sqrt(n); i <= limit; i++) {
             if (n % i == 0) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private static int sqrt(int n) {
+        int left = 0;
+        int right = n;
+        int mid;
+        int temp = n;
+        while (true) {
+            mid = (left + right) / 2;
+            int result = mid * mid;
+            if (mid == temp || result == n) {
+                return mid;
+            } else if (result < n) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+            temp = mid;
+        }
     }
 }
