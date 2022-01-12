@@ -40,7 +40,7 @@ public class Solution {
             int result = mid * mid;
             if (mid == temp || result == n) {
                 return mid;
-            } else if (result < n) {
+            } else if (result > 0 && result < n) {
                 left = mid;
             } else {
                 right = mid;
