@@ -12,7 +12,7 @@ public class Solution {
     }
 
     public <T> void swap(List<T> list) {
-        list.set(0, list.get(1));
+        list.set(0, list.set(1, list.get(0)));
     }
 
     // Does not compile!
