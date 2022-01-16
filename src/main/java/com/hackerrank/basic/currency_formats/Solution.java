@@ -1,4 +1,4 @@
-package com.hackerrank.solutions.currency_formats;
+package com.hackerrank.basic.currency_formats;
 
 import java.text.NumberFormat;
 import java.util.Locale;
