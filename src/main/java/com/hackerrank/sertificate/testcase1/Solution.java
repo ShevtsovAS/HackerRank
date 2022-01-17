@@ -13,22 +13,22 @@ class Parser{
         Stack<Character> openBraces = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
-            if (isCloseBrace(ch) && (openBraces.isEmpty() || isCloseBraceNotMatches(ch, openBraces.pop()))) {
-                return false;
-            } else {
+            if (isOpenBrace(ch)) {
                 openBraces.push(ch);
+            } else if (openBraces.isEmpty() || isCloseBraceNotMatches(ch, openBraces.pop())) {
+                return false;
             }
         }
 
         return openBraces.isEmpty();
     }
 
-    private boolean isCloseBraceNotMatches(char closeBrace, char openBrace) {
-        return closeBrace == ')' ? openBrace == '(' : openBrace == '{';
+    private boolean isOpenBrace(char ch) {
+        return ch == '(' || ch == '{';
     }
 
-    private boolean isCloseBrace(char ch) {
-        return ch == ')' || ch == '}';
+    private boolean isCloseBraceNotMatches(char closeBrace, char openBrace) {
+        return closeBrace == ')' ? openBrace != '(' : openBrace != '{';
     }
 
 }
