@@ -1,4 +1,4 @@
-package com.hackerrank.basic.data_structures;
+package com.hackerrank.basic.data_structures.matrix;
 
 import java.io.BufferedReader;
 import java.io.IOException;

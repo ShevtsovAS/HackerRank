@@ -1,4 +1,4 @@
-package com.hackerrank.basic.data_structures;
+package com.hackerrank.basic.data_structures.stack;
 
 import java.util.Scanner;
 import java.util.Stack;
@@ -37,7 +37,7 @@ class Parser {
 
 }
 
-public class StackBraceParser {
+public class BraceParser {
     public static void main(String[] args) {
         Parser parser = new Parser();
 
