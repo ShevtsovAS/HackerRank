@@ -1,5 +1,8 @@
 package com.hackerrank.basic.data_structures.can_win;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Solution {
@@ -8,21 +11,17 @@ public class Solution {
         if (game == null) {
             return false;
         }
-        return canWinRecursive(leap, game, 0);
-    }
-
-    private static boolean canWinRecursive(int leap, int[] game, int i) {
-        if (i >= game.length) {
-            return true;
-        } else if (i < 0 || game[i] != 0) {
-            return false;
+        Queue<Integer> traverse = new LinkedList<>(List.of(leap, 1));
+        while (!traverse.isEmpty()) {
+            int i = traverse.poll();
+            if (i >= game.length) {
+                return true;
+            } else if (i > 0 && game[i] == 0) {
+                game[i] = 1;
+                traverse.addAll(List.of(i + leap, i + 1, i - 1));
+            }
         }
-
-        game[i] = 1;
-
-        return canWinRecursive(leap, game, i + leap)
-                || canWinRecursive(leap, game, i + 1)
-                || canWinRecursive(leap, game, i - 1);
+        return false;
     }
 
     public static void main(String[] args) {
