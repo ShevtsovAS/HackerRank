@@ -8,10 +8,11 @@ public class FindPalindromes {
     }
 
     public static boolean isPalindrome(String s) {
-        for (int i = 0, j = s.length() - 1; i < s.length(); i++, j--) {
-            if (i >= j) {
-                return true;
-            } else if (s.charAt(i) != s.charAt(j)) {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        for (int i = 0, j = s.length() - 1, mid = s.length() / 2; i <= mid; i++, j--) {
+            if (s.charAt(i) != s.charAt(j)) {
                 return false;
             }
         }
