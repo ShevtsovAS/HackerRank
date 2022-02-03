@@ -21,32 +21,24 @@ class Result {
         return player.stream().map(score -> getRank(ranks, score)).collect(toList());
     }
 
-    private static int getRank(List<Integer> ranks, Integer score) {
-        int max = ranks.get(0);
-        int min = ranks.get(ranks.size() - 1);
-        int rank = ranks.size() + 1;
-
-        if (score >= max) {
+    private static int getRank(List<Integer> ranks, int score) {
+        if (ranks.isEmpty() || score >= ranks.get(0)) {
             return 1;
-        } else if (score < min) {
-            return rank;
-        } else if (score == min) {
+        } else if (score < ranks.get(ranks.size() - 1)) {
+            return ranks.size() + 1;
+        } else if (score == ranks.get(ranks.size() - 1)) {
             return ranks.size();
         }
+        return binarySearch(ranks, score, 0, ranks.size());
+    }
 
-        for (int l = 0, r = ranks.size(), m = r / 2; l < r; m = (l + r) / 2) {
-            int res = ranks.get(m);
-            if (m == l) {
-                return m + 2;
-            } else if (score == res) {
-                return m + 1;
-            } else if (score < res) {
-                l = m;
-            } else {
-                r = m;
-            }
+    private static int binarySearch(List<Integer> ranks, int score, int low, int high) {
+        int mid = (high - low) / 2 + low;
+        int rank = ranks.get(mid);
+        if (score == rank || low == high) {
+            return score >= rank ? mid + 1 : mid + 2;
         }
-        return rank;
+        return rank > score ? binarySearch(ranks, score, mid + 1, high) : binarySearch(ranks, score, low, mid);
     }
 
 }
