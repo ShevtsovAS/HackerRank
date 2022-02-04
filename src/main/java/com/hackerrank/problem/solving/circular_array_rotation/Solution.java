@@ -1,5 +1,7 @@
 package com.hackerrank.problem.solving.circular_array_rotation;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -18,14 +20,9 @@ class Result {
 
     public static List<Integer> circularArrayRotation(List<Integer> a, int k, List<Integer> queries) {
         // Write your code here
-        int[] arr = a.stream().mapToInt(Integer::intValue).toArray();
-        int[] tail = new int[k % arr.length];
-        if (tail.length > 0) {
-            System.arraycopy(arr, arr.length - tail.length, tail, 0, tail.length);
-            System.arraycopy(arr, 0, arr, tail.length, arr.length - tail.length);
-            System.arraycopy(tail, 0, arr, 0, tail.length);
-        }
-        return queries.stream().map(i -> arr[i]).collect(toList());
+        List<Integer> list = new ArrayList<>(a);
+        Collections.rotate(list, k);
+        return queries.stream().map(list::get).collect(toList());
     }
 
 }
