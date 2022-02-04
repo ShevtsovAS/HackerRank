@@ -18,8 +18,12 @@ public class Solution {
         int[][] result = new int[n][n];
         int num = 1;
         for (int i = 0; i < n; i++) {
-            for (int j = 0, row = i + n / 2, col = i - n / 2; j < n; j++, row--, col++) {
-                result[(n + row) % n][(n + col) % n] = num++;
+            int x = i + n / 2;
+            int y = i - n / 2;
+            for (int j = 0; j < n; j++) {
+                int row = (n + x--) % n;
+                int col = (n + y++) % n;
+                result[row][col] = num++;
             }
         }
 
