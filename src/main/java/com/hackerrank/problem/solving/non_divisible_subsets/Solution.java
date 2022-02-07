@@ -19,7 +19,7 @@ class Result {
         for (int n : s) {
             remainders[n % k]++;
         }
-        int max = Math.min(1, remainders[0]);
+        int max = 0;
         for (int i = 1; i <= (k / 2); i++) {
             if (i != k - i) {
                 max += Math.max(remainders[i], remainders[k - i]);
@@ -27,6 +27,8 @@ class Result {
                 max += Math.min(1, remainders[i]);
             }
         }
+//        max += Math.min(max, Math.min(1, remainders[0]));
+        max += Math.min(1, remainders[0]);
         return max;
     }
 
