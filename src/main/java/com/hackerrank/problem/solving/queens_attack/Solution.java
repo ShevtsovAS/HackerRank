@@ -1,5 +1,6 @@
 package com.hackerrank.problem.solving.queens_attack;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -143,5 +144,6 @@ class Result {
 public class Solution {
     public static void main(String[] args) {
         System.out.println(Result.queensAttack(5, 4, 3, List.of(List.of(5, 5), List.of(4, 2), List.of(2, 3))));
+        System.out.println(Result.queensAttack(1, 1, 1, Collections.emptyList()));
     }
 }
