@@ -1,14 +1,13 @@
 package com.hackerrank.problem.solving.queens_attack;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.IntSupplier;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
-import java.util.stream.IntStream;
 
 final class Point {
+    private static final int START = 1;
+
     private final int row;
     private final int col;
 
@@ -21,129 +20,129 @@ final class Point {
         return new Point(row, col);
     }
 
-    public int getRow() {
-        return this.row;
+    public boolean leftBottomFrom(Point point) {
+        return row < point.row && col < point.col && isSameDiagonal(point);
     }
 
-    public int getCol() {
-        return this.col;
+    public boolean leftFrom(Point point) {
+        return row == point.row && col < point.col;
+    }
+
+    public boolean leftTopFrom(Point point) {
+        return row > point.row && col < point.col && isSameDiagonal(point);
+    }
+
+    public boolean topFrom(Point point) {
+        return col == point.col && row > point.row;
+    }
+
+    public boolean rightTopFrom(Point point) {
+        return row > point.row && col > point.col && isSameDiagonal(point);
+    }
+
+    public boolean rightFrom(Point point) {
+        return row == point.row && col > point.col;
+    }
+
+    public boolean rightBottomFrom(Point point) {
+        return row < point.row && col > point.col && isSameDiagonal(point);
+    }
+
+    public boolean bottomFrom(Point point) {
+        return col == point.col && row < point.row;
+    }
+
+    public int leftBottomSquares() {
+        return Math.min(diff(row, START), diff(col, START));
+    }
+
+    public int leftSquares() {
+        return diff(col, START);
+    }
+
+    public int leftTopSquares(int size) {
+        return Math.min(diff(col, START), diff(row, size));
+    }
+
+    public int topSquares(int size) {
+        return diff(row, size);
+    }
+
+    public int rightTopSquares(int size) {
+        return Math.min(diff(row, size), diff(col, size));
+    }
+
+    public int rightSquares(int size) {
+        return diff(col, size);
+    }
+
+    public int rightBottomSquares(int size) {
+        return Math.min(diff(col, size), diff(row, START));
+    }
+
+    public int bottomSquares() {
+        return diff(row, START);
+    }
+
+    public int rowDiff(Point point) {
+        return diff(row, point.row) - START;
+    }
+
+    public int colDiff(Point point) {
+        return diff(col, point.col) - START;
+    }
+
+    private boolean isSameDiagonal(Point point) {
+        return rowDiff(point) == colDiff(point);
+    }
+
+    private int diff(int n1, int n2) {
+        return Math.abs(n1 - n2);
     }
 }
 
 class Result {
 
-    /*
-     * Complete the 'queensAttack' function below.
-     *
-     * The function is expected to return an INTEGER.
-     * The function accepts following parameters:
-     *  1. INTEGER n
-     *  2. INTEGER k
-     *  3. INTEGER r_q
-     *  4. INTEGER c_q
-     *  5. 2D_INTEGER_ARRAY obstacles
-     */
+    private static final int LEFT_BOTTOM = 0;
+    private static final int LEFT = 1;
+    private static final int LEFT_TOP = 2;
+    private static final int TOP = 3;
+    private static final int RIGHT_TOP = 4;
+    private static final int RIGHT = 5;
+    private static final int RIGHT_BOTTOM = 6;
+    private static final int BOTTOM = 7;
 
     public static int queensAttack(Point queen, List<Point> obstacles, int size) {
-        return IntStream.of(
-                attack(bottomOf(queen), rowDiff(queen), obstacles, bottomSquares(queen)),
-                attack(bottomLeftOf(queen), rowDiff(queen), obstacles, bottomLeftSquares(queen)),
-                attack(leftOf(queen), colDiff(queen), obstacles, leftSquares(queen)),
-                attack(topLeftOf(queen), rowDiff(queen), obstacles, topLeftSquares(queen, size)),
-                attack(topOf(queen), rowDiff(queen), obstacles, topSquares(queen, size)),
-                attack(topRightOf(queen), rowDiff(queen), obstacles, topRightSquares(queen, size)),
-                attack(rightOf(queen), colDiff(queen), obstacles, rightSquares(queen, size)),
-                attack(bottomRightOf(queen), rowDiff(queen), obstacles, bottomRightSquares(queen, size))
-        ).sum();
+        int[] squares = new int[8];
+        squares[LEFT_BOTTOM] = queen.leftBottomSquares();
+        squares[LEFT] = queen.leftSquares();
+        squares[LEFT_TOP] = queen.leftTopSquares(size);
+        squares[TOP] = queen.topSquares(size);
+        squares[RIGHT_TOP] = queen.rightTopSquares(size);
+        squares[RIGHT] = queen.rightSquares(size);
+        squares[RIGHT_BOTTOM] = queen.rightBottomSquares(size);
+        squares[BOTTOM] = queen.bottomSquares();
+        for (Point obstacle : obstacles) {
+            if (obstacle.leftBottomFrom(queen)) {
+                squares[LEFT_BOTTOM] = Math.min(squares[LEFT_BOTTOM], obstacle.rowDiff(queen));
+            } else if (obstacle.leftFrom(queen)) {
+                squares[LEFT] = Math.min(squares[LEFT], obstacle.colDiff(queen));
+            } else if (obstacle.leftTopFrom(queen)) {
+                squares[LEFT_TOP] = Math.min(squares[LEFT_TOP], obstacle.rowDiff(queen));
+            } else if (obstacle.topFrom(queen)) {
+                squares[TOP] = Math.min(squares[TOP], obstacle.rowDiff(queen));
+            } else if (obstacle.rightTopFrom(queen)) {
+                squares[RIGHT_TOP] = Math.min(squares[RIGHT_TOP], obstacle.rowDiff(queen));
+            } else if (obstacle.rightFrom(queen)) {
+                squares[RIGHT] = Math.min(squares[RIGHT], obstacle.colDiff(queen));
+            } else if (obstacle.rightBottomFrom(queen)) {
+                squares[RIGHT_BOTTOM] = Math.min(squares[RIGHT_BOTTOM], obstacle.rowDiff(queen));
+            } else if (obstacle.bottomFrom(queen)) {
+                squares[BOTTOM] = Math.min(squares[BOTTOM], obstacle.rowDiff(queen));
+            }
+        }
+        return Arrays.stream(squares).sum();
     }
-
-    private static int attack(Predicate<Point> filter, ToIntFunction<Point> action, List<Point> obstacles, IntSupplier otherAction) {
-        return obstacles.stream()
-                .filter(filter)
-                .mapToInt(action).min()
-                .orElseGet(otherAction);
-    }
-
-    private static IntSupplier bottomRightSquares(Point queen, int size) {
-        return () -> Math.min(diff(queen.getCol(), size), diff(queen.getRow(), 1));
-    }
-
-    private static IntSupplier rightSquares(Point queen, int size) {
-        return () -> diff(queen.getCol(), size);
-    }
-
-    private static IntSupplier topRightSquares(Point queen, int size) {
-        return () -> Math.min(diff(queen.getRow(), size), diff(queen.getCol(), size));
-    }
-
-    private static IntSupplier topSquares(Point queen, int size) {
-        return () -> diff(queen.getRow(), size);
-    }
-
-    private static IntSupplier topLeftSquares(Point queen, int size) {
-        return () -> Math.min(diff(queen.getCol(), 1), diff(queen.getRow(), size));
-    }
-
-    private static IntSupplier leftSquares(Point queen) {
-        return () -> diff(queen.getCol(), 1);
-    }
-
-    private static IntSupplier bottomLeftSquares(Point queen) {
-        return () -> Math.min(diff(queen.getRow(), 1), diff(queen.getCol(), 1));
-    }
-
-    private static IntSupplier bottomSquares(Point queen) {
-        return () -> diff(queen.getRow(), 1);
-    }
-
-    private static Predicate<Point> bottomRightOf(Point point) {
-        return oPoint -> oPoint.getRow() < point.getRow() && oPoint.getCol() > point.getCol() && isSameDiagonal(point, oPoint);
-    }
-
-    private static Predicate<Point> rightOf(Point point) {
-        return oPoint -> oPoint.getRow() == point.getRow() && oPoint.getCol() > point.getCol();
-    }
-
-    private static Predicate<Point> topRightOf(Point point) {
-        return oPoint -> oPoint.getRow() > point.getRow() && oPoint.getCol() > point.getCol() && isSameDiagonal(point, oPoint);
-    }
-
-    private static Predicate<Point> topOf(Point point) {
-        return oPoint -> oPoint.getCol() == point.getCol() && oPoint.getRow() > point.getRow();
-    }
-
-    private static Predicate<Point> topLeftOf(Point point) {
-        return oPoint -> oPoint.getRow() > point.getRow() && oPoint.getCol() < point.getCol() && isSameDiagonal(point, oPoint);
-    }
-
-    private static Predicate<Point> leftOf(Point point) {
-        return oPoint -> oPoint.getRow() == point.getRow() && oPoint.getCol() < point.getCol();
-    }
-
-    private static Predicate<Point> bottomLeftOf(Point point) {
-        return oPoint -> oPoint.getRow() < point.getRow() && oPoint.getCol() < point.getCol() && isSameDiagonal(point, oPoint);
-    }
-
-    private static Predicate<Point> bottomOf(Point point) {
-        return o -> o.getCol() == point.getCol() && o.getRow() < point.getRow();
-    }
-
-    private static boolean isSameDiagonal(Point p1, Point p2) {
-        return diff(p1.getRow(), p2.getRow()) == diff(p1.getCol(), p2.getCol());
-    }
-
-    private static ToIntFunction<Point> rowDiff(Point point) {
-        return oPoint -> diff(point.getRow(), oPoint.getRow()) - 1;
-    }
-
-    private static ToIntFunction<Point> colDiff(Point point) {
-        return oPoint -> diff(point.getCol(), oPoint.getCol()) - 1;
-    }
-
-    private static int diff(int n1, int n2) {
-        return Math.abs(n1 - n2);
-    }
-
 }
 
 //https://www.hackerrank.com/challenges/queens-attack-2/problem
