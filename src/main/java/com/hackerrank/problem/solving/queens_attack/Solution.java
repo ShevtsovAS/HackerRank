@@ -1,10 +1,34 @@
 package com.hackerrank.problem.solving.queens_attack;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
+
+final class Point {
+    private final int row;
+    private final int col;
+
+    private Point(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public static Point of(int row, int col) {
+        return new Point(row, col);
+    }
+
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getCol() {
+        return this.col;
+    }
+}
 
 class Result {
 
@@ -20,130 +44,112 @@ class Result {
      *  5. 2D_INTEGER_ARRAY obstacles
      */
 
-    public static int queensAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
-        // Write your code here
+    public static int queensAttack(Point queen, List<Point> obstacles, int size) {
         return IntStream.of(
-                        bottomAttack(qRow, qCol, obstacles),
-                        bottomLeftAttack(qRow, qCol, obstacles),
-                        leftAttack(qRow, qCol, obstacles),
-                        topLeftAttack(size, qRow, qCol, obstacles),
-                        topAttack(size, qRow, qCol, obstacles),
-                        topRightAttack(size, qRow, qCol, obstacles),
-                        rightAttack(size, qRow, qCol, obstacles),
-                        bottomRightAttack(size, qRow, qCol, obstacles))
-                .sum();
+                attack(bottomOf(queen), rowDiff(queen), obstacles, bottomSquares(queen)),
+                attack(bottomLeftOf(queen), rowDiff(queen), obstacles, bottomLeftSquares(queen)),
+                attack(leftOf(queen), colDiff(queen), obstacles, leftSquares(queen)),
+                attack(topLeftOf(queen), rowDiff(queen), obstacles, topLeftSquares(queen, size)),
+                attack(topOf(queen), rowDiff(queen), obstacles, topSquares(queen, size)),
+                attack(topRightOf(queen), rowDiff(queen), obstacles, topRightSquares(queen, size)),
+                attack(rightOf(queen), colDiff(queen), obstacles, rightSquares(queen, size)),
+                attack(bottomRightOf(queen), rowDiff(queen), obstacles, bottomRightSquares(queen, size))
+        ).sum();
     }
 
-    private static int bottomRightAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
+    private static int attack(Predicate<Point> filter, ToIntFunction<Point> action, List<Point> obstacles, IntSupplier otherAction) {
         return obstacles.stream()
-                .filter(isBottomRightObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(Math.min(diff(qCol, size), diff(qRow, 1)));
+                .filter(filter)
+                .mapToInt(action).min()
+                .orElseGet(otherAction);
     }
 
-    private static Predicate<List<Integer>> isBottomRightObstacle(int qRow, int qCol) {
-        return o -> o.get(0) < qRow && o.get(1) > qCol && isSameDiagonal(qRow, qCol, o);
+    private static IntSupplier bottomRightSquares(Point queen, int size) {
+        return () -> Math.min(diff(queen.getCol(), size), diff(queen.getRow(), 1));
     }
 
-    private static int rightAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isRightObstacle(qRow, qCol))
-                .mapToInt(colDiff(qCol)).min()
-                .orElse(diff(qCol, size));
+    private static IntSupplier rightSquares(Point queen, int size) {
+        return () -> diff(queen.getCol(), size);
     }
 
-    private static Predicate<List<Integer>> isRightObstacle(int qRow, int qCol) {
-        return o -> o.get(0) == qRow && o.get(1) > qCol;
+    private static IntSupplier topRightSquares(Point queen, int size) {
+        return () -> Math.min(diff(queen.getRow(), size), diff(queen.getCol(), size));
     }
 
-    private static int topRightAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isTopRightObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(Math.min(diff(qRow, size), diff(qCol, size)));
+    private static IntSupplier topSquares(Point queen, int size) {
+        return () -> diff(queen.getRow(), size);
     }
 
-    private static Predicate<List<Integer>> isTopRightObstacle(int qRow, int qCol) {
-        return o -> o.get(0) > qRow && o.get(1) > qCol && isSameDiagonal(qRow, qCol, o);
+    private static IntSupplier topLeftSquares(Point queen, int size) {
+        return () -> Math.min(diff(queen.getCol(), 1), diff(queen.getRow(), size));
     }
 
-    private static int topAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isTopObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(diff(qRow, size));
+    private static IntSupplier leftSquares(Point queen) {
+        return () -> diff(queen.getCol(), 1);
     }
 
-    private static Predicate<List<Integer>> isTopObstacle(int qRow, int qCol) {
-        return o -> o.get(1) == qCol && o.get(0) > qRow;
+    private static IntSupplier bottomLeftSquares(Point queen) {
+        return () -> Math.min(diff(queen.getRow(), 1), diff(queen.getCol(), 1));
     }
 
-    private static int topLeftAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isTopLeftObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(Math.min(diff(qCol, 1), diff(qRow, size)));
+    private static IntSupplier bottomSquares(Point queen) {
+        return () -> diff(queen.getRow(), 1);
     }
 
-    private static Predicate<List<Integer>> isTopLeftObstacle(int qRow, int qCol) {
-        return o -> o.get(0) > qRow && o.get(1) < qCol && isSameDiagonal(qRow, qCol, o);
+    private static Predicate<Point> bottomRightOf(Point point) {
+        return oPoint -> oPoint.getRow() < point.getRow() && oPoint.getCol() > point.getCol() && isSameDiagonal(point, oPoint);
     }
 
-    private static int leftAttack(int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isLeftObstacle(qRow, qCol))
-                .mapToInt(colDiff(qCol)).min()
-                .orElse(diff(qCol, 1));
+    private static Predicate<Point> rightOf(Point point) {
+        return oPoint -> oPoint.getRow() == point.getRow() && oPoint.getCol() > point.getCol();
     }
 
-    private static Predicate<List<Integer>> isLeftObstacle(int qRow, int qCol) {
-        return o -> o.get(0) == qRow && o.get(1) < qCol;
+    private static Predicate<Point> topRightOf(Point point) {
+        return oPoint -> oPoint.getRow() > point.getRow() && oPoint.getCol() > point.getCol() && isSameDiagonal(point, oPoint);
     }
 
-    private static int bottomLeftAttack(int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isBottomLeftObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(Math.min(diff(qRow, 1), diff(qCol, 1)));
+    private static Predicate<Point> topOf(Point point) {
+        return oPoint -> oPoint.getCol() == point.getCol() && oPoint.getRow() > point.getRow();
     }
 
-    private static Predicate<List<Integer>> isBottomLeftObstacle(int qRow, int qCol) {
-        return o -> o.get(0) < qRow && o.get(1) < qCol && isSameDiagonal(qRow, qCol, o);
+    private static Predicate<Point> topLeftOf(Point point) {
+        return oPoint -> oPoint.getRow() > point.getRow() && oPoint.getCol() < point.getCol() && isSameDiagonal(point, oPoint);
     }
 
-    private static int bottomAttack(int qRow, int qCol, List<List<Integer>> obstacles) {
-        return obstacles.stream()
-                .filter(isBottomObstacle(qRow, qCol))
-                .mapToInt(rowDiff(qRow)).min()
-                .orElse(diff(qRow, 1));
+    private static Predicate<Point> leftOf(Point point) {
+        return oPoint -> oPoint.getRow() == point.getRow() && oPoint.getCol() < point.getCol();
     }
 
-    private static Predicate<List<Integer>> isBottomObstacle(int qRow, int qCol) {
-        return o -> o.get(1) == qCol && o.get(0) < qRow;
+    private static Predicate<Point> bottomLeftOf(Point point) {
+        return oPoint -> oPoint.getRow() < point.getRow() && oPoint.getCol() < point.getCol() && isSameDiagonal(point, oPoint);
     }
 
-    private static boolean isSameDiagonal(int qRow, int qCol, List<Integer> o) {
-        return diff(qRow, o.get(0)) == diff(qCol, o.get(1));
+    private static Predicate<Point> bottomOf(Point point) {
+        return o -> o.getCol() == point.getCol() && o.getRow() < point.getRow();
+    }
+
+    private static boolean isSameDiagonal(Point p1, Point p2) {
+        return diff(p1.getRow(), p2.getRow()) == diff(p1.getCol(), p2.getCol());
+    }
+
+    private static ToIntFunction<Point> rowDiff(Point point) {
+        return oPoint -> diff(point.getRow(), oPoint.getRow()) - 1;
+    }
+
+    private static ToIntFunction<Point> colDiff(Point point) {
+        return oPoint -> diff(point.getCol(), oPoint.getCol()) - 1;
     }
 
     private static int diff(int n1, int n2) {
         return Math.abs(n1 - n2);
     }
 
-    private static ToIntFunction<List<Integer>> rowDiff(int row) {
-        return o -> diff(row, o.get(0)) - 1;
-    }
-
-    private static ToIntFunction<List<Integer>> colDiff(int col) {
-        return o -> diff(col, o.get(1)) - 1;
-    }
-
 }
 
 //https://www.hackerrank.com/challenges/queens-attack-2/problem
 public class Solution {
-    public static void main(String[] args) {
-        System.out.println(Result.queensAttack(5, 4, 3, List.of(List.of(5, 5), List.of(4, 2), List.of(2, 3))));
-        System.out.println(Result.queensAttack(1, 1, 1, Collections.emptyList()));
+    public static void main(String[] args) throws IOException {
+        System.out.println(Result.queensAttack(Point.of(4, 3), List.of(Point.of(5, 5), Point.of(4, 2), Point.of(2, 3)), 5));
+        System.out.println(Result.queensAttack(Point.of(1, 1), Collections.emptyList(), 1));
     }
 }
