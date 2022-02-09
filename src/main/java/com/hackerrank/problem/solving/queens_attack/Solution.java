@@ -3,6 +3,8 @@ package com.hackerrank.problem.solving.queens_attack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -20,43 +22,41 @@ class Result {
      *  5. 2D_INTEGER_ARRAY obstacles
      */
 
-    public static int queensAttack(int size, int row, int col, List<List<Integer>> obstacles) {
+    public static int queensAttack(int size, int qRow, int qCol, List<List<Integer>> obstacles) {
         // Write your code here
-        Set<Long> obstaclePoints = obstacles.stream().map(Result::getObstaclePoint).collect(toSet());
-        return Arrays.stream(getDirs()).mapToInt(dir -> tryAttack(dir, row, col, size, obstaclePoints)).sum();
-    }
-
-    private static long getObstaclePoint(List<Integer> obstacle) {
-        return getPoint(obstacle.get(0), obstacle.get(1));
-    }
-
-    private static long getPoint(int row, int col) {
-        return (long) row << 32 | col;
-    }
-
-    private static int tryAttack(int[] d, int row, int col, int size, Set<Long> obstacles) {
-        int res = 0;
-        while (canAttack(row += d[0], col += d[1], size, obstacles)) {
-            res++;
-        }
-        return res;
-    }
-
-    private static int[][] getDirs() {
-        return new int[][]{{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {+1, -1}, {+1, 0}, {+1, +1}};
-    }
-
-    private static boolean canAttack(int row, int col, int size, Set<Long> obstacles) {
-        long point = getPoint(row, col);
-        return fit(row, size) && fit(col, size) && canAttackPoint(obstacles, point);
-    }
-
-    private static boolean canAttackPoint(Set<Long> obstacles, long point) {
-        return !obstacles.contains(point);
-    }
-
-    private static boolean fit(int n, int high) {
-        return n >= 1 && n <= high;
+        int b = obstacles.stream()
+                .filter(o -> o.get(1) == qCol && o.get(0) < qRow)
+                .mapToInt(o -> Math.abs(qRow - o.get(0) - 1)).min()
+                .orElse(Math.abs(qRow - 1));
+        int bl = obstacles.stream()
+                .filter(o -> qRow - o.get(0) == qCol - o.get(1) && o.get(0) < qRow && o.get(1) < qCol)
+                .mapToInt(o -> qRow - o.get(0) - 1).min()
+                .orElse(Math.min(Math.abs(qRow - 1), Math.abs(qCol - 1)));
+        int l = obstacles.stream()
+                .filter(o -> o.get(0) == qRow && o.get(1) < qCol)
+                .mapToInt(o -> Math.abs(qCol - o.get(1) - 1)).min()
+                .orElse(Math.abs(qCol - 1));
+        int tl = obstacles.stream()
+                .filter(o -> o.get(0) - qRow == qCol - o.get(1) && o.get(0) > qRow && o.get(1) < qCol)
+                .mapToInt(o -> o.get(0) - qRow - 1).min()
+                .orElse(Math.min(Math.abs(qCol - 1), Math.abs(qRow - size)));
+        int t = obstacles.stream()
+                .filter(o -> o.get(1) == qCol && o.get(0) > qRow)
+                .mapToInt(o -> Math.abs(o.get(0) - qRow - 1)).min()
+                .orElse(Math.abs(qRow - size));
+        int tr = obstacles.stream()
+                .filter(o -> o.get(0) - qRow == o.get(1) - qCol && o.get(0) > qRow && o.get(1) > qCol)
+                .mapToInt(o -> o.get(0) - qRow - 1).min()
+                .orElse(Math.min(Math.abs(qRow - size), Math.abs(qCol - size)));
+        int r = obstacles.stream()
+                .filter(o -> o.get(0) == qRow && o.get(1) > qCol)
+                .mapToInt(o -> Math.abs(o.get(1) - qCol - 1)).min()
+                .orElse(Math.abs(qCol - size));
+        int br = obstacles.stream()
+                .filter(o -> qRow - o.get(0) == o.get(1) - qCol && o.get(0) < qRow && o.get(1) > qCol)
+                .mapToInt(o -> qRow - o.get(0) - 1).min()
+                .orElse(Math.min(Math.abs(qCol - size), Math.abs(qRow - 1)));
+        return IntStream.of(b, bl, l, tl, t, tr, r, br).sum();
     }
 
 }
