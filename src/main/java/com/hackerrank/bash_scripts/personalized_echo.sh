@@ -1,4 +1,3 @@
 #!/bin/bash
 
-read -r name
-echo "Welcome $name"
+echo "Welcome $(</dev/stdin)"
