@@ -1,8 +1,8 @@
 package com.examples.javarush.files_copy;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import lombok.experimental.UtilityClass;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -47,6 +47,8 @@ public class Solution {
         if (destFile.exists()) {
             //noinspection ResultOfMethodCallIgnored
             destFile.renameTo(renamedDestFile);
+        } else {
+            Files.createDirectories(renamedDestFile.toPath().getParent());
         }
         return renamedDestFile;
     }
@@ -54,9 +56,22 @@ public class Solution {
     private static void readFilesAndWriteToDestinationFile(List<File> files, File destinationFile) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(destinationFile, true)) {
             for (File file : files) {
-                fos.write(Files.readAllBytes(file.toPath()));
-                fos.write("\n".getBytes());
+                try (InputStream fis = new FileInputStream(file)) {
+                    FileUtils.copy(fis, fos);
+                    fos.write("\n".getBytes());
+                }
             }
+        }
+    }
+}
+
+@UtilityClass
+class FileUtils {
+    void copy(InputStream source, FileOutputStream target) throws IOException {
+        byte[] buf = new byte[8192];
+        int length;
+        while ((length = source.read(buf)) > 0) {
+            target.write(buf, 0, length);
         }
     }
 }
