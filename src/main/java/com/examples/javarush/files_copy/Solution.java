@@ -2,6 +2,7 @@ package com.examples.javarush.files_copy;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -37,18 +38,20 @@ public class Solution {
     }
 
     private static File createDestinationFile(String dest) throws IOException {
-        File destFile = Paths.get(dest).toFile();
-        File renamedDestFile = Paths.get(destFile.getParent(), "allFilesContent.txt").toFile();
-        if (renamedDestFile.exists()) {
-            Files.delete(renamedDestFile.toPath());
+        Path destPath = Paths.get(dest);
+        Path newDestPath = Paths.get(destPath.toFile().getParent(), "allFilesContent.txt");
+
+        if (Files.exists(newDestPath) && Files.isRegularFile(newDestPath)) {
+            Files.delete(newDestPath);
         }
-        if (destFile.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            destFile.renameTo(renamedDestFile);
-        } else {
-            Files.createDirectories(renamedDestFile.toPath().getParent());
+
+        if (Files.exists(destPath) && Files.isRegularFile(destPath)) {
+            Files.move(destPath, newDestPath);
+        } else if (!Files.exists(newDestPath.getParent())) {
+            Files.createDirectories(newDestPath.getParent());
         }
-        return renamedDestFile;
+
+        return newDestPath.toFile();
     }
 
     private static void readFilesAndWriteToDestinationFile(List<File> files, File destinationFile) throws IOException {
