@@ -1,7 +1,5 @@
 package com.examples.javarush.files_copy;
 
-import lombok.experimental.UtilityClass;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,21 +55,10 @@ public class Solution {
         try (FileOutputStream fos = new FileOutputStream(destinationFile, true)) {
             for (File file : files) {
                 try (InputStream fis = new FileInputStream(file)) {
-                    FileUtils.copy(fis, fos);
+                    fis.transferTo(fos);
                     fos.write("\n".getBytes());
                 }
             }
-        }
-    }
-}
-
-@UtilityClass
-class FileUtils {
-    void copy(InputStream source, FileOutputStream target) throws IOException {
-        byte[] buf = new byte[8192];
-        int length;
-        while ((length = source.read(buf)) > 0) {
-            target.write(buf, 0, length);
         }
     }
 }
