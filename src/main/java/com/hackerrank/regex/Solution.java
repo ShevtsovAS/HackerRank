@@ -9,6 +9,7 @@ public class Solution {
         backReferencesToFailedGroup();
         backResetGroups();
         forwardReferences();
+        positiveLookahead();
     }
 
     private static void forwardReferences() {
@@ -49,5 +50,15 @@ public class Solution {
             System.out.println(m.group());
         }
         System.out.println();
+    }
+
+    private static void positiveLookahead() {
+        Pattern p = Pattern.compile("o(?=oo)");
+        Matcher m = p.matcher("shooot");
+        int Count = 0;
+        while(m.find()){
+            Count += 1;
+        }
+        System.out.format("Number of matches : %d",Count);
     }
 }
