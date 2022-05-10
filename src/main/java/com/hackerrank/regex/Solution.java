@@ -10,6 +10,7 @@ public class Solution {
         backResetGroups();
         forwardReferences();
         positiveLookahead();
+        negativeLookahead();
     }
 
     private static void forwardReferences() {
@@ -54,6 +55,16 @@ public class Solution {
 
     private static void positiveLookahead() {
         Pattern p = Pattern.compile("o(?=oo)");
+        Matcher m = p.matcher("shooot");
+        int Count = 0;
+        while(m.find()){
+            Count += 1;
+        }
+        System.out.format("Number of matches : %d",Count);
+    }
+
+    private static void negativeLookahead() {
+        Pattern p = Pattern.compile("(.)(?!\\1)");
         Matcher m = p.matcher("shooot");
         int Count = 0;
         while(m.find()){
