@@ -12,6 +12,7 @@ public class Solution {
         positiveLookahead();
         negativeLookahead();
         positiveLookbehind();
+        negativeLookbehind();
     }
 
     private static void forwardReferences() {
@@ -77,6 +78,16 @@ public class Solution {
     private static void positiveLookbehind() {
         Pattern p = Pattern.compile("(?<=[13579])\\d");
         Matcher m = p.matcher("12345");
+        int Count = 0;
+        while(m.find()){
+            Count += 1;
+        }
+        System.out.format("Number of matches : %d",Count);
+    }
+
+    private static void negativeLookbehind() {
+        Pattern p = Pattern.compile("(?<![aeiuoAEIOU])\\w");
+        Matcher m = p.matcher("Hel1o");
         int Count = 0;
         while(m.find()){
             Count += 1;
