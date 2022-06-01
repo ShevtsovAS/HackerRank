@@ -12,7 +12,7 @@ public class AlienUsername {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         List<String> names = getLines(in);
-        Pattern pattern = Pattern.compile("^[_.][0-9]+[a-zA-Z]*_?$");
+        Pattern pattern = Pattern.compile("^[_.]\\d+[a-zA-Z]*_?$");
         names.forEach(name -> {
             Matcher matcher = pattern.matcher(name);
             String result = matcher.matches() ? "VALID" : "INVALID";

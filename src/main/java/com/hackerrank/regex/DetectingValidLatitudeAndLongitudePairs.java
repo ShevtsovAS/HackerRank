@@ -8,22 +8,16 @@ import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
-public class IpAddressValidation {
+//https://www.hackerrank.com/challenges/detecting-valid-latitude-and-longitude/problem
+public class DetectingValidLatitudeAndLongitudePairs {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         List<String> lines = getLines(in);
-        Pattern ipV4Pattern = Pattern.compile("^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)(\\.(?!$)|$)){4}$");
-        Pattern ipV6Pattern = Pattern.compile("^(([\\da-f]{1,4})(:(?!$)|$)){8}$");
+        Pattern pattern = Pattern.compile("^\\([+-]?(90(\\.0+)?|([1-8]\\d|\\d)(\\.\\d+)?), [+-]?(180(\\.0+)?|(1[0-7]\\d|[1-9]\\d|\\d)(\\.\\d+)?)\\)$");
         lines.forEach(line -> {
-            Matcher ipV4Matcher = ipV4Pattern.matcher(line);
-            Matcher ipV6Matcher = ipV6Pattern.matcher(line);
-            if (ipV4Matcher.matches()) {
-                System.out.println("IPv4");
-            } else if (ipV6Matcher.matches()) {
-                System.out.println("IPv6");
-            } else {
-                System.out.println("Neither");
-            }
+            Matcher matcher = pattern.matcher(line);
+            String result = matcher.matches() ? "Valid" : "Invalid";
+            System.out.println(result);
         });
     }
 
