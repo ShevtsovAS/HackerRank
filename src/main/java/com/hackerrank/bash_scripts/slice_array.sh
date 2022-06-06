@@ -6,9 +6,4 @@ while read -r line; do
   arr+=("$line")
 done
 
-result=""
-for i in {3..7}; do
-  result+="${arr[$i]} "
-done
-
-echo "$result"
+echo "${arr[@]}" | cut -f3-7 -d ' '
