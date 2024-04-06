@@ -47,7 +47,7 @@ public class Solution {
             var numbers = new int[size];
             while (numbers[0] < 10) {
                 long sum = sum(numbers);
-                if (sum < N && isArmstrong(sum)) {
+                if (sum < N && isArmstrong(sum, size)) {
                     result.add(sum);
                 }
                 numbers[0]++;
@@ -84,9 +84,8 @@ public class Solution {
         return sum;
     }
 
-    private static boolean isArmstrong(long value) {
+    private static boolean isArmstrong(long value, int power) {
         long sum = 0;
-        int power = getDigits(value);
         long temp = value;
         while (temp > 0) {
             int num = (int) (temp % 10);
