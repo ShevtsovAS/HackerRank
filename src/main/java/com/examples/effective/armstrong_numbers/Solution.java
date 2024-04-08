@@ -1,8 +1,8 @@
 package com.examples.effective.armstrong_numbers;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.TreeSet;
 import java.util.stream.IntStream;
 
 public class Solution {
@@ -34,15 +34,15 @@ public class Solution {
 
     public static void main(String[] args) {
         var start = System.currentTimeMillis();
-        var armstrongNums = getNumbers(Long.MAX_VALUE);
+        var armstrongNums = getArmstrongNums(Long.MAX_VALUE);
         var end = System.currentTimeMillis();
         System.out.printf("%.2f сек.%n", (end - start) / 1000d);
         System.out.println(mem() / 1024 / 1024 + "mb");
-        System.out.println(Arrays.toString(armstrongNums));
+        System.out.println(armstrongNums);
     }
 
-    public static long[] getNumbers(long maxValue) {
-        Set<Long> result = ConcurrentHashMap.newKeySet();
+    public static Set<Long> getArmstrongNums(long maxValue) {
+        Set<Long> result = Collections.synchronizedSortedSet(new TreeSet<>());
         IntStream.rangeClosed(1, getNumLength(maxValue)).parallel().forEach(size -> {
             var numbers = new int[size];
             while (numbers[0] < 10) {
@@ -56,7 +56,7 @@ public class Solution {
                 }
             }
         });
-        return result.stream().mapToLong(Long::longValue).sorted().toArray();
+        return result;
     }
 
     private static void increment(int[] numbers) {
