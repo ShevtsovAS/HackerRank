@@ -34,10 +34,12 @@ public class Solution {
 
     public static void main(String[] args) {
         var start = System.currentTimeMillis();
+        var startMem = mem();
         var armstrongNums = getArmstrongNums(Long.MAX_VALUE);
         var end = System.currentTimeMillis();
+        var endMem = mem();
         System.out.printf("%.2f сек.%n", (end - start) / 1000d);
-        System.out.println(mem() / 1024 / 1024 + "mb");
+        System.out.println((endMem - startMem) / 1024 / 1024 + "mb");
         System.out.println(armstrongNums);
     }
 
