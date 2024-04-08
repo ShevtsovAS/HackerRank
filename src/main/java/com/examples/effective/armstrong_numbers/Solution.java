@@ -99,7 +99,12 @@ public class Solution {
     }
 
     private static int getNumLength(long num) {
-        return (int) Math.log10(num) - 1;
+        var result = 0;
+        while (num > 0) {
+            result++;
+            num /= 10;
+        }
+        return result;
     }
 
     public static long mem() {
