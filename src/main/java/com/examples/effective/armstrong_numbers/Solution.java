@@ -43,7 +43,7 @@ public class Solution {
 
     public static Set<Long> getArmstrongNums(long maxValue) {
         Set<Long> result = Collections.synchronizedSortedSet(new TreeSet<>());
-        IntStream.rangeClosed(1, getNumLength(maxValue)).parallel().forEach(size -> {
+        getSizesRange(maxValue).forEach(size -> {
             var numbers = new int[size];
             while (numbers[0] < 10) {
                 long sum = sum(numbers);
@@ -57,6 +57,10 @@ public class Solution {
             }
         });
         return result;
+    }
+
+    private static IntStream getSizesRange(long maxValue) {
+        return IntStream.rangeClosed(1, getNumLength(maxValue)).parallel();
     }
 
     private static void increment(int[] numbers) {
