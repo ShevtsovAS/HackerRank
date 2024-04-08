@@ -41,13 +41,13 @@ public class Solution {
         System.out.println(Arrays.toString(armstrongNums));
     }
 
-    public static long[] getNumbers(long N) {
+    public static long[] getNumbers(long maxValue) {
         Set<Long> result = ConcurrentHashMap.newKeySet();
-        IntStream.rangeClosed(1, getNumLength(N)).parallel().forEach(size -> {
+        IntStream.rangeClosed(1, getNumLength(maxValue)).parallel().forEach(size -> {
             var numbers = new int[size];
             while (numbers[0] < 10) {
                 long sum = sum(numbers);
-                if (sum < N && isArmstrong(sum, size)) {
+                if (isArmstrong(sum, size)) {
                     result.add(sum);
                 }
                 numbers[0]++;
@@ -78,7 +78,7 @@ public class Solution {
         for (int number : numbers) {
             sum += DEGREES[number][numbers.length];
             if (sum < 0) {
-                return Long.MAX_VALUE;
+                return -1;
             }
         }
         return sum;
