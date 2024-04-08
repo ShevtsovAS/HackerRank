@@ -43,7 +43,7 @@ public class Solution {
 
     public static long[] getNumbers(long N) {
         Set<Long> result = ConcurrentHashMap.newKeySet();
-        IntStream.rangeClosed(1, getDigits(N)).parallel().forEach(size -> {
+        IntStream.rangeClosed(1, getNumLength(N)).parallel().forEach(size -> {
             var numbers = new int[size];
             while (numbers[0] < 10) {
                 long sum = sum(numbers);
@@ -85,26 +85,21 @@ public class Solution {
     }
 
     private static boolean isArmstrong(long value, int power) {
+        long originalValue = value;
         long sum = 0;
-        long temp = value;
-        while (temp > 0) {
-            int num = (int) (temp % 10);
-            sum += DEGREES[num][power];
-            if (sum > value) {
+        while (value > 0) {
+            int digit = (int) (value % 10);
+            sum += DEGREES[digit][power];
+            if (sum > originalValue) {
                 return false;
             }
-            temp /= 10;
+            value /= 10;
         }
-        return sum == value;
+        return sum == originalValue;
     }
 
-    private static int getDigits(long num) {
-        var result = 0;
-        while (num > 0) {
-            result++;
-            num /= 10;
-        }
-        return result;
+    private static int getNumLength(long num) {
+        return (int) Math.log10(num) - 1;
     }
 
     public static long mem() {
