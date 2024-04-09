@@ -1,6 +1,8 @@
 package com.examples.lincolnlabs;
 
 
+import java.util.regex.Pattern;
+
 /**
  * Написать метод formattedNumber проверяющий корректность числа, которое передаётся в виде строки
  * Число может быть разделено на запятые и одной точкой
@@ -8,8 +10,18 @@ package com.examples.lincolnlabs;
  * Число после точки может быть 1 и более символов
  */
 public class Solution {
+
+    private final static Pattern NUMBER_PATTERN = Pattern.compile("^\\d{1,3}(,\\d{3})*(\\.\\d+)?$");
+
     public static void main(String[] args) {
-        System.out.println(formattedNumber("1,000,232.12345"));
+        String testNumber = "1,000,232.12345";
+        System.out.println(regexSolution(testNumber));
+        System.out.println(formattedNumber(testNumber));
+    }
+
+    public static boolean regexSolution(String number) {
+        return NUMBER_PATTERN.matcher(number).matches();
+
     }
 
     public static boolean formattedNumber(String number) {
