@@ -2,16 +2,8 @@ package com.hackerrank.problem.solving.between_two_sets;
 
 import java.util.List;
 
+//https://www.hackerrank.com/challenges/between-two-sets/problem
 class Result {
-
-    /*
-     * Complete the 'getTotalX' function below.
-     *
-     * The function is expected to return an INTEGER.
-     * The function accepts following parameters:
-     *  1. INTEGER_ARRAY a
-     *  2. INTEGER_ARRAY b
-     */
 
     public static int getTotalX(List<Integer> a, List<Integer> b) {
         // Write your code here
