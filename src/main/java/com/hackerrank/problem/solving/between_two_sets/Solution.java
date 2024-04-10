@@ -15,23 +15,13 @@ class Result {
 
     public static int getTotalX(List<Integer> a, List<Integer> b) {
         // Write your code here
-        int f = lcm(a);
-        int l = gcd(b);
+        int f = a.stream().reduce(Result::lcm).orElse(0);
+        int l = b.stream().reduce(Result::gcd).orElse(0);
         int count = 0;
-        for (int i = f, j = 2; i <= l; i = f * j, j++) {
-            if (l % i == 0) {
-                count++;
-            }
+        for (int i = f, j = 2; i <= l; i = f * j++) {
+            count += l % i == 0 ? 1 : 0;
         }
         return count;
-    }
-
-    private static int lcm(List<Integer> input) {
-        int result = input.get(0);
-        for (int i = 1; i < input.size(); i++) {
-            result = lcm(result, input.get(i));
-        }
-        return result;
     }
 
     private static int lcm(int a, int b) {
@@ -40,14 +30,6 @@ class Result {
 
     private static int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
-    }
-
-    private static int gcd(List<Integer> input) {
-        int result = input.get(0);
-        for (int i = 1; i < input.size(); i++) {
-            result = gcd(result, input.get(i));
-        }
-        return result;
     }
 
 }
