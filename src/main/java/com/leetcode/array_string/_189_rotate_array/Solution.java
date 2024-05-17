@@ -39,6 +39,13 @@ public class Solution {
         revers(nums, k, nums.length - 1);
     }
 
+    public void leftRotate(int[] nums, int k) {
+        k %= nums.length;
+        revers(nums, 0, nums.length - 1);
+        revers(nums, 0, nums.length - 1 - k);
+        revers(nums, nums.length - k, nums.length - 1);
+    }
+
     private void revers(int[] nums, int left, int right) {
         while (left < right) {
             int tmp = nums[left];
@@ -49,7 +56,11 @@ public class Solution {
 
     public static void main(String[] args) {
         int[] nums = {1, 2, 3, 4, 5, 6, 7};
-        new Solution().rotate(nums, 3);
+        Solution solution = new Solution();
+        solution.rotate(nums, 3);
+        System.out.println(Arrays.toString(nums));
+
+        solution.leftRotate(nums, 1);
         System.out.println(Arrays.toString(nums));
     }
 }
