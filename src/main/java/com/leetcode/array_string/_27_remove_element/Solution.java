@@ -1,4 +1,4 @@
-package com.leetcode._27_remove_element;
+package com.leetcode.array_string._27_remove_element;
 
 import java.util.Arrays;
 

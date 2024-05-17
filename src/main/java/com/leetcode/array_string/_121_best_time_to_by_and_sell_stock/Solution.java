@@ -1,4 +1,4 @@
-package com.leetcode._121_best_time_to_by_and_sell_stock;
+package com.leetcode.array_string._121_best_time_to_by_and_sell_stock;
 
 /**
  * <h1>121. Best Time to Buy and Sell Stock</h1>

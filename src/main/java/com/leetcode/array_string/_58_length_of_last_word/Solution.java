@@ -1,4 +1,4 @@
-package com.leetcode._58_length_of_last_word;
+package com.leetcode.array_string._58_length_of_last_word;
 
 /**
  * <h1>58. Length of Last Word</h1>

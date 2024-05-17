@@ -1,4 +1,4 @@
-package com.leetcode._169_majority_element;
+package com.leetcode.array_string._169_majority_element;
 
 import java.util.HashMap;
 import java.util.Map;

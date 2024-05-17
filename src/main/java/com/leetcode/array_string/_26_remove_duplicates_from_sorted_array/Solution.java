@@ -1,4 +1,4 @@
-package com.leetcode._26_remove_duplicates_from_sorted_array;
+package com.leetcode.array_string._26_remove_duplicates_from_sorted_array;
 
 import java.util.Arrays;
 

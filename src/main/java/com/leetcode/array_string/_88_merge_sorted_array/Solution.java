@@ -1,4 +1,4 @@
-package com.leetcode._88_merge_sorted_array;
+package com.leetcode.array_string._88_merge_sorted_array;
 
 import java.util.Arrays;
 
