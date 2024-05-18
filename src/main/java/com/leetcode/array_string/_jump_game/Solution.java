@@ -22,10 +22,18 @@ package com.leetcode.array_string._jump_game;
  */
 public class Solution {
     public boolean canJump(int[] nums) {
-        int reachable = 0;
-        for (int i=0; i<nums.length; ++i) {
-            if (i > reachable) return false;
-            reachable = Math.max(reachable, i + nums[i]);
+        if (nums.length <= 1) return true;
+        int jumpsToReach = 1;
+        int target = nums.length - 1;
+        int jumpFrom = target - 1;
+        while (target > 0) {
+            if (nums[jumpFrom] >= jumpsToReach) {
+                target = jumpFrom;
+                jumpsToReach = 1;
+            } else {
+                jumpsToReach++;
+            }
+            if (--jumpFrom < 0 && target != 0) return false;
         }
         return true;
     }
