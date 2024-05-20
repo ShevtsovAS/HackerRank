@@ -1,4 +1,4 @@
-package com.leetcode.array_string._jump_game;
+package com.leetcode.array_string._55_jump_game;
 
 /**
  * <h1>55. Jump Game</h1>
