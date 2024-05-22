@@ -1,8 +1,5 @@
 package com.leetcode.array_string._12_integer_to_roman;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <h1>12. Integer to Roman</h1>
  * Seven different symbols represent Roman numerals with the following values:<br>
@@ -62,55 +59,23 @@ import java.util.Map;
  */
 public class Solution {
 
-    private final Map<Integer, String> romans = new HashMap<>();
-    {
-        romans.put(1, "I");
-        romans.put(2, "II");
-        romans.put(3, "III");
-        romans.put(4, "IV");
-        romans.put(5, "V");
-        romans.put(6, "VI");
-        romans.put(7, "VII");
-        romans.put(8, "VIII");
-        romans.put(9, "IX");
-        romans.put(10, "X");
-        romans.put(20, "XX");
-        romans.put(30, "XXX");
-        romans.put(40, "XL");
-        romans.put(50, "L");
-        romans.put(60, "LX");
-        romans.put(70, "LXX");
-        romans.put(80, "LXXX");
-        romans.put(90, "XC");
-        romans.put(100, "C");
-        romans.put(200, "CC");
-        romans.put(300, "CCC");
-        romans.put(400, "CD");
-        romans.put(500, "D");
-        romans.put(600, "DC");
-        romans.put(700, "DCC");
-        romans.put(800, "DCCC");
-        romans.put(900, "CM");
-        romans.put(1000, "M");
-        romans.put(2000, "MM");
-        romans.put(3000, "MMM");
-    }
+    private static final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    private static final String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
     public String intToRoman(int num) {
-        StringBuilder builder = new StringBuilder();
-        int mul = 1;
-        do  {
-            int digit = num % 10;
-            digit *= mul;
-            mul *= 10;
-            if (digit > 0) builder.insert(0, romans.get(digit));
-
-        } while ((num /= 10) > 0);
+        var builder = new StringBuilder();
+        for (int i = 0; i < values.length; i++) {
+            if (num == 0) break;
+            while (num >= values[i]) {
+                builder.append(symbols[i]);
+                num -= values[i];
+            }
+        }
         return builder.toString();
     }
 
     public static void main(String[] args) {
-        System.out.println(new Solution().intToRoman(1001));
+        System.out.println(new Solution().intToRoman(3749));
     }
 
 }
