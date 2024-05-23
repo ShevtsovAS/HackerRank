@@ -33,17 +33,19 @@ package com.leetcode.array_string._151_reverse_words_in_a_string;
  */
 public class Solution {
     public String reverseWords(String s) {
-        StringBuilder result = new StringBuilder();
+        char[] result = new char[s.length()];
+        int pos = 0;
         for (int i = s.length() - 1; i >= 0 ; i--) {
             if (s.charAt(i) == ' ') continue;
             int j = i - 1;
             while (j >= 0 && s.charAt(j) != ' ') j--;
-            String sub = s.substring(j + 1, i + 1);
-            if (!result.isEmpty()) result.append(" ");
-            result.append(sub);
+            if (pos != 0) result[pos++] = ' ';
+            for (int k = j + 1; k <= i; k++) {
+                result[pos++] = s.charAt(k);
+            }
             i = j;
         }
-        return result.toString();
+        return new String(result, 0, pos);
     }
 
     public static void main(String[] args) {
