@@ -1,5 +1,7 @@
 package com.leetcode.array_string._42_traping_rain_water;
 
+import static java.lang.Math.max;
+
 /**
  * 42. Trapping Rain Water<br>
  * Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.<br>
@@ -20,18 +22,12 @@ package com.leetcode.array_string._42_traping_rain_water;
  * 0 <= height[i] <= 10^5<br>
  */
 public class Solution {
-    public int trap(int[] height) {
-        int water = 0;
-        int maxLeft = 0;
-        int maxRight = 0;
-        for (int i = 1, j = height.length - 2; i <= j; ) {
-            maxLeft = Math.max(maxLeft, height[i - 1]);
-            maxRight = Math.max(maxRight, height[j + 1]);
-            water += maxLeft <= maxRight
-                    ? Math.max(maxLeft - height[i++], 0)
-                    : Math.max(maxRight - height[j--], 0);
-        }
-        return water;
+    public int trap(int[] h) {
+        int w = 0, l = 0, r = 0;
+        for (int i = 1, j = h.length - 2; i <= j; ) {
+            l = max(l, h[i - 1]); r = max(r, h[j + 1]);
+            w += l <= r ? max(l - h[i++], 0) : max(r - h[j--], 0);
+        } return w;
     }
 
     public static void main(String[] args) {
