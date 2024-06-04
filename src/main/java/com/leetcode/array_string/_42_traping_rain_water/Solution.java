@@ -21,27 +21,21 @@ package com.leetcode.array_string._42_traping_rain_water;
  */
 public class Solution {
     public int trap(int[] height) {
-        int result = 0;
-
-        int[] left = new int[height.length];
-
+        int water = 0;
         int maxLeft = 0;
-        for (int i = 1; i < height.length; i++) {
-            left[i] = maxLeft = Math.max(height[i - 1], maxLeft);
-        }
-
         int maxRight = 0;
-        for (int i = height.length - 2; i >= 0; i--) {
-            maxRight = Math.max(height[i + 1], maxRight);
-            int water = Math.min(left[i], maxRight) - height[i];
-            if (water > 0) result += water;
+        for (int i = 1, j = height.length - 2; i <= j; ) {
+            maxLeft = Math.max(maxLeft, height[i - 1]);
+            maxRight = Math.max(maxRight, height[j + 1]);
+            water += maxLeft <= maxRight
+                    ? Math.max(maxLeft - height[i++], 0)
+                    : Math.max(maxRight - height[j--], 0);
         }
-
-        return result;
+        return water;
     }
 
     public static void main(String[] args) {
-        int[] height = {4, 2, 0, 3, 2, 5};
+        int[] height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
         System.out.println(new Solution().trap(height));
     }
 }
