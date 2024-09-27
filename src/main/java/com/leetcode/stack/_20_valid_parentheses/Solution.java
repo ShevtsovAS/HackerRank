@@ -41,12 +41,12 @@ public class Solution {
         return stack.isEmpty();
     }
 
-    private boolean isCloseBrace(char c1, char c2) {
-        return switch (c1) {
-            case '(' -> c2 == ')';
-            case '[' -> c2 == ']';
-            case '{' -> c2 == '}';
-            default -> throw new IllegalStateException("Unexpected value: " + c2);
+    private boolean isCloseBrace(char open, char close) {
+        return switch (open) {
+            case '(' -> close == ')';
+            case '[' -> close == ']';
+            case '{' -> close == '}';
+            default -> throw new IllegalStateException("Unexpected value: " + close);
         };
     }
 
