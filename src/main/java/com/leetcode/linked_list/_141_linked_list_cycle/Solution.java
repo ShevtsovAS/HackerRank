@@ -31,8 +31,7 @@ package com.leetcode.linked_list._141_linked_list_cycle;
 public class Solution {
     public boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) return false;
-        ListNode node2 = head.next.next;
-        return hasCycle(head, node2);
+        return hasCycle(head, head.next.next);
     }
 
     public boolean hasCycle(ListNode node1, ListNode node2) {
